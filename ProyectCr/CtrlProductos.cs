@@ -50,5 +50,77 @@ namespace ProyectCr
             }
             return lista;
         }   
+
+        public bool insertar(Productos datos)
+        {
+            bool bandera = false;
+
+            string sql = "INSERT INTO productos (codigo, nombre, descripcion, precio_publico, existencias) VALUES" +
+                "('"+datos.Codigo+"', '"+ datos.Nombre +"', '"+ datos.Descripcion +"', '"+ datos.Precio_publico +"', " +
+                "'" +datos.Existencias +"')";
+
+            try
+            {
+                MySqlConnection conexionBD = base.conexion();
+                conexionBD.Open();
+                MySqlCommand comando = new MySqlCommand(sql, conexionBD);
+                comando.ExecuteNonQuery();
+                bandera = true;
+            }
+            catch (MySqlException ex)
+            {
+
+                Console.WriteLine(ex.Message.ToString());
+                bandera = false;
+            }
+            return bandera;
+        }
+
+        public bool actualizar(Productos datos)
+        {
+            bool bandera = false;
+
+            string sql = "UPDATE productos SET codigo='" + datos.Codigo +"', nombre='" + datos.Nombre +"'," +
+                "descripcion='"+ datos.Descripcion +"', precio_publico='"+ datos.Precio_publico +"', existencias='"+ datos.Existencias +"' WHERE id='"+ datos.Id +"'";
+
+            try
+            {
+                MySqlConnection conexionBD = base.conexion();
+                conexionBD.Open();
+                MySqlCommand comando = new MySqlCommand(sql, conexionBD);
+                comando.ExecuteNonQuery();
+                bandera = true;
+            }
+            catch (MySqlException ex)
+            {
+
+                Console.WriteLine(ex.Message.ToString());
+                bandera = false;
+            }
+            return bandera;
+        }
+
+        public bool eliminar(int id )
+        {
+            bool bandera = false;
+
+            string sql = "DELETE FROM productos WHERE id='" + id + "'";
+
+            try
+            {
+                MySqlConnection conexionBD = base.conexion();
+                conexionBD.Open();
+                MySqlCommand comando = new MySqlCommand(sql, conexionBD);
+                comando.ExecuteNonQuery();
+                bandera = true;
+            }
+            catch (MySqlException ex)
+            {
+
+                Console.WriteLine(ex.Message.ToString());
+                bandera = false;
+            }
+            return bandera;
+        }
     }
 }

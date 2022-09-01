@@ -29,5 +29,80 @@ namespace ProyectCr
             CtrlProductos _ctrlProductos = new CtrlProductos();
             dataGridView1.DataSource = _ctrlProductos.consulta(dato);
         }
+
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            bool bandera = false;
+
+            Productos _producto = new Productos();
+            _producto.Codigo = txtCodigo.Text;
+            _producto.Nombre = txtNombre.Text;
+            _producto.Descripcion = txtDescripcion .Text;
+            _producto.Precio_publico = double.Parse(txtPrecioPublico.Text);
+            _producto.Existencias = int.Parse(txtExistencias.Text);
+
+            CtrlProductos ctrl = new CtrlProductos();
+
+            if (txtId.Text != "")
+            {
+                _producto.Id = int.Parse(txtId.Text);
+                bandera = ctrl.actualizar(_producto);
+            }
+            else
+            {
+                bandera = ctrl.insertar(_producto);
+            }
+
+            if (bandera)
+            {
+                MessageBox.Show("REgistro guardado");
+                limpiar();
+                cargarTabla(null);
+            }
+        }
+
+        private void limpiar()
+        {
+            txtId.Text = "";
+            txtCodigo.Text = "";
+            txtNombre.Text = "";
+            txtDescripcion.Text = "";
+            txtPrecioPublico.Text = "";
+            txtExistencias.Text = "";
+        }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            txtId.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+            txtCodigo.Text = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+            txtNombre.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+            txtDescripcion.Text = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+            txtPrecioPublico.Text = dataGridView1.CurrentRow.Cells[4].Value.ToString();
+            txtExistencias.Text = dataGridView1.CurrentRow.Cells[5].Value.ToString();
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            bool bandera = false;
+            DialogResult resultado = MessageBox.Show("Seguro que desea eliminr el registro?","salair", MessageBoxButtons.YesNoCancel);
+            if (resultado == DialogResult.Yes)
+            {
+                int id = int.Parse(dataGridView1.CurrentRow.Cells[0].Value.ToString());
+                CtrlProductos _ctrl = new CtrlProductos();
+                bandera =_ctrl.eliminar(id);
+
+                if (bandera)
+                {
+                    MessageBox.Show("registro elimindo");
+                    limpiar();
+                    cargarTabla(null);
+                }
+            }
+        }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            limpiar();
+        }
     }
 }
